@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { User } from "../models/user.model.js";
+import { generateTokenAndSetCookie } from "../utils/generateToken.js";
 export const userSignup = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
@@ -34,6 +35,28 @@ export const userSignup = async (req, res) => {
     return res.status(201).json(newUser);
   } catch (error) {
     console.log("usersignup controller error", error.message);
+    return res.status(500).json(error.message);
+  }
+};
+
+export const userLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    email.toLowerCase();
+    const user = await User.findOne({ email });
+    //password check
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      user.password || ""
+    );
+    //check weather user email and password is correct or not
+    if (!user || !isPasswordCorrect) {
+      return res.status(400).json({ error: "Invalid username or password" });
+    }
+    generateTokenAndSetCookie(user._id, res);
+    res.status(200).json({ user });
+  } catch (error) {
+    console.log("userLogin controller error", error.message);
     return res.status(500).json(error.message);
   }
 };
