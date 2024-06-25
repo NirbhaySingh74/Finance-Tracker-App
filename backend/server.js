@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import authRoutes from "./routers/auth.routes.js";
+import financeRouter from "./routers/finance.router.js";
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -24,3 +25,4 @@ mongoose
   .catch((err) => console.log("Mongodb connection error", err));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/finance", financeRouter);
