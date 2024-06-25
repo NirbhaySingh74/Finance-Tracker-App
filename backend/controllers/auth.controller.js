@@ -60,3 +60,14 @@ export const userLogin = async (req, res) => {
     return res.status(500).json(error.message);
   }
 };
+
+export const userLogout = async (req, res) => {
+  try {
+    //set the cookies 0
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.log("userLogout controller error", error.message);
+    return res.status(500).json(error.message);
+  }
+};
