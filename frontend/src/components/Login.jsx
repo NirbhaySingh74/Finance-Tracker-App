@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
     // Handle login logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
+    console.log("Email:", data.email);
+    console.log("Password:", data.password);
   };
 
   return (
@@ -17,7 +19,7 @@ const Login = () => {
         <h2 className="text-3xl font-bold mb-6 text-center text-indigo-600">
           Login
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700 font-medium">
               Email
@@ -26,10 +28,13 @@ const Login = () => {
               type="email"
               id="email"
               className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              {...register("email", { required: "Email is required" })}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
           <div className="mb-6">
             <label
@@ -42,10 +47,13 @@ const Login = () => {
               type="password"
               id="password"
               className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              {...register("password", { required: "Password is required" })}
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
           <button
             type="submit"
@@ -55,7 +63,7 @@ const Login = () => {
           </button>
         </form>
         <p className="mt-4 text-center text-gray-600">
-          Don't have an account?{" "}
+          Dont have an account?{" "}
           <a
             href="/signup"
             className="text-indigo-600 hover:text-indigo-700 font-medium"

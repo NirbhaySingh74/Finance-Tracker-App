@@ -10,17 +10,18 @@ export const userSignup = async (req, res) => {
       throw new Error("All fields are required");
     }
 
-    //password check
+    // password check
     if (password !== confirmPassword) {
-      return res.status(400).json({ error: "Password don't match" });
+      return res.status(400).json({ error: "Passwords don't match" });
     }
 
-    // user already exist
+    // user already exists
     const user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ error: "User Already Exist" });
+      return res.status(400).json({ error: "User already exists" });
     }
-    //hash passsword
+
+    // hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -34,8 +35,8 @@ export const userSignup = async (req, res) => {
 
     return res.status(201).json(newUser);
   } catch (error) {
-    console.log("usersignup controller error", error.message);
-    return res.status(500).json(error.message);
+    console.log("userSignup controller error", error.message);
+    return res.status(500).json({ error: error.message });
   }
 };
 
