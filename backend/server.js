@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import authRoutes from "./routers/auth.routes.js";
 import financeRouter from "./routers/finance.router.js";
+import userRoutes from "./routers/user.route.js";
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -26,3 +27,4 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/finance", financeRouter);
+app.use("/api/user", userRoutes);

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const {
     register,
@@ -9,8 +10,9 @@ const SignUp = () => {
     reset,
     formState: { errors },
   } = useForm();
-
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       const res = await axios.post(
         "http://localhost:5000/api/auth/signup",
@@ -19,6 +21,7 @@ const SignUp = () => {
       if (res.status === 201) {
         toast.success("User signed up successfully");
         reset();
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);

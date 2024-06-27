@@ -3,7 +3,7 @@ import { User } from "../models/user.model.js";
 import { generateTokenAndSetCookie } from "../utils/generateToken.js";
 export const userSignup = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword, profilePic } = req.body;
     email.toLowerCase();
 
     if (!name || !email || !password || !confirmPassword) {
@@ -30,6 +30,7 @@ export const userSignup = async (req, res) => {
       email,
       password: hashedPassword,
       confirmPassword,
+      profilePic,
     });
     await newUser.save();
 
