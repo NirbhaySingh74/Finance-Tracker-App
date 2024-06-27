@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-
+import { Link } from "react-router-dom";
 const SignUp = () => {
   const {
     register,
@@ -116,12 +116,12 @@ const SignUp = () => {
         </form>
         <p className="mt-4 text-center text-gray-600">
           Already have an account?{" "}
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="text-green-600 hover:text-green-700 font-medium"
           >
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>
