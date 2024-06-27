@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+
 const FinanceDashboard = () => {
   const [financeData, setFinanceData] = useState([]);
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const FinanceDashboard = () => {
   const [userData, setUserData] = useState(null);
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
+
   const fetchFinanceData = async () => {
     try {
       const response = await axios.get("/api/finance", {
@@ -80,7 +82,6 @@ const FinanceDashboard = () => {
     try {
       await axios.post("/api/auth/logout", {});
       toast.success("Logged out successfully!");
-      // Add any additional logout logic here
       navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
@@ -88,10 +89,15 @@ const FinanceDashboard = () => {
     }
   };
 
+  const totalAmount = financeData.reduce(
+    (total, record) => total + parseFloat(record.amount),
+    0
+  );
+
   return (
     <div className="min-h-screen bg-gray-100 p-4">
-      <header className="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
-        <div className="text-2xl font-bold">Finance Dashboard</div>
+      <header className="bg-blue-700 text-white py-4 px-6 flex justify-between items-center shadow-md">
+        <div className="text-3xl font-bold">Finance Dashboard</div>
         {userData && (
           <div className="relative flex items-center">
             <img
@@ -100,9 +106,9 @@ const FinanceDashboard = () => {
               className="w-10 h-10 rounded-full mr-4 cursor-pointer"
               onClick={() => setShowLogout(!showLogout)}
             />
-            <span>{userData.username}</span>
+            <span className="font-medium">{userData.username}</span>
             {showLogout && (
-              <div className="absolute top-full right-0 mt-2 bg-white shadow-lg rounded-lg py-2">
+              <div className="absolute top-full right-0 mt-2 bg-white shadow-lg rounded-lg py-2 z-10">
                 <button
                   onClick={handleLogout}
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
@@ -184,6 +190,10 @@ const FinanceDashboard = () => {
           </button>
         </form>
 
+        <h2 className="text-2xl font-semibold mb-4">
+          Total Amount: ₹{totalAmount.toFixed(2)}
+        </h2>
+
         <h2 className="text-2xl font-semibold mb-4">Records</h2>
         <table className="w-full bg-white rounded-lg shadow-md">
           <thead className="bg-gray-200">
@@ -200,7 +210,7 @@ const FinanceDashboard = () => {
             {financeData?.map((record) => (
               <tr key={record._id} className="text-center">
                 <td className="py-2 px-4">{record?.description}</td>
-                <td className="py-2 px-4">{record?.amount}</td>
+                <td className="py-2 px-4">₹{record?.amount.toFixed(2)}</td>
                 <td className="py-2 px-4">{record?.category}</td>
                 <td className="py-2 px-4">{record?.paymentMethod}</td>
                 <td className="py-2 px-4">
