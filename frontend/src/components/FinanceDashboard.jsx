@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const FinanceDashboard = () => {
   const [financeData, setFinanceData] = useState([]);
   const [formData, setFormData] = useState({
@@ -10,11 +11,13 @@ const FinanceDashboard = () => {
     paymentMethod: "Cash",
   });
   const [userData, setUserData] = useState(null);
-
+  const [showLogout, setShowLogout] = useState(false);
+  const navigate = useNavigate();
   const fetchFinanceData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/finance");
-      console.log("response", response);
+      const response = await axios.get("/api/finance", {
+        withCredentials: true,
+      });
       setFinanceData(response.data);
     } catch (error) {
       console.error("Error fetching finance data:", error);
@@ -23,9 +26,9 @@ const FinanceDashboard = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/user/profile"
-      );
+      const response = await axios.get("/api/user/profile", {
+        withCredentials: true,
+      });
       setUserData(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -45,10 +48,9 @@ const FinanceDashboard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/finance/add",
-        formData
-      );
+      const response = await axios.post("/api/finance/add", formData, {
+        withCredentials: true,
+      });
       setFinanceData([...financeData, response.data]);
       setFormData({
         description: "",
@@ -56,8 +58,33 @@ const FinanceDashboard = () => {
         category: "Income",
         paymentMethod: "Cash",
       });
+      toast.success("Record added successfully!");
     } catch (error) {
       console.error("Error submitting finance data:", error);
+      toast.error("Failed to add record!");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/finance/${id}`, { withCredentials: true });
+      setFinanceData(financeData.filter((record) => record._id !== id));
+      toast.success("Record deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting finance data:", error);
+      toast.error("Failed to delete record!");
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("/api/auth/logout", {});
+      toast.success("Logged out successfully!");
+      // Add any additional logout logic here
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast.error("Failed to logout!");
     }
   };
 
@@ -66,13 +93,24 @@ const FinanceDashboard = () => {
       <header className="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
         <div className="text-2xl font-bold">Finance Dashboard</div>
         {userData && (
-          <div className="flex items-center">
+          <div className="relative flex items-center">
             <img
               src={userData.profilePic}
               alt="User Profile"
-              className="w-10 h-10 rounded-full mr-4"
+              className="w-10 h-10 rounded-full mr-4 cursor-pointer"
+              onClick={() => setShowLogout(!showLogout)}
             />
             <span>{userData.username}</span>
+            {showLogout && (
+              <div className="absolute top-full right-0 mt-2 bg-white shadow-lg rounded-lg py-2">
+                <button
+                  onClick={handleLogout}
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         )}
       </header>
@@ -155,6 +193,7 @@ const FinanceDashboard = () => {
               <th className="py-2 px-4">Category</th>
               <th className="py-2 px-4">Payment Method</th>
               <th className="py-2 px-4">Date</th>
+              <th className="py-2 px-4">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -166,6 +205,14 @@ const FinanceDashboard = () => {
                 <td className="py-2 px-4">{record?.paymentMethod}</td>
                 <td className="py-2 px-4">
                   {new Date(record?.createdAt).toLocaleDateString()}
+                </td>
+                <td className="py-2 px-4">
+                  <button
+                    onClick={() => handleDelete(record._id)}
+                    className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
