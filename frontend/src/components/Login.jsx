@@ -1,14 +1,37 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = (data) => {
+  const navigate = useNavigate();
+  const onSubmit = async (data) => {
     // Handle login logic here
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        data
+      );
+      if (res.status === 200) {
+        toast.success("User Login successfully");
+
+        reset();
+        navigate("/financeDashboard");
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.response && error.response.data && error.response.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    }
     console.log("Email:", data.email);
     console.log("Password:", data.password);
   };
