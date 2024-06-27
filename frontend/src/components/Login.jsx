@@ -12,12 +12,12 @@ const Login = () => {
   } = useForm();
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    // Handle login logic here
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        data
-      );
+      const res = await axios.post("/api/auth/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (res.status === 200) {
         toast.success("User Login successfully");
 
@@ -32,10 +32,7 @@ const Login = () => {
         toast.error("An unexpected error occurred");
       }
     }
-    console.log("Email:", data.email);
-    console.log("Password:", data.password);
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-500">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">

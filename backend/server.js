@@ -7,14 +7,18 @@ import mongoose from "mongoose";
 import authRoutes from "./routers/auth.routes.js";
 import financeRouter from "./routers/finance.router.js";
 import userRoutes from "./routers/user.route.js";
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-app.use(cookieParser());
+
+// Initialize dotenv to use environment variables
 dotenv.config();
 
+const app = express();
 const PORT = process.env.PORT || 7000;
 
+// Middleware
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors());
+// MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
@@ -25,6 +29,7 @@ mongoose
   })
   .catch((err) => console.log("Mongodb connection error", err));
 
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/finance", financeRouter);
 app.use("/api/user", userRoutes);

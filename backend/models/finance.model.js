@@ -22,6 +22,7 @@ const financeSchema = new mongoose.Schema(
       required: [true, "Payment Method is required"],
       enum: ["Cash", "Credit Card", "Debit Card", "Bank Transfer", "Other"],
     },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );

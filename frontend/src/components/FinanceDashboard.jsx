@@ -14,6 +14,7 @@ const FinanceDashboard = () => {
   const fetchFinanceData = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/finance");
+      console.log("response", response);
       setFinanceData(response.data);
     } catch (error) {
       console.error("Error fetching finance data:", error);
@@ -22,7 +23,9 @@ const FinanceDashboard = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/user");
+      const response = await axios.get(
+        "http://localhost:5000/api/user/profile"
+      );
       setUserData(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
