@@ -67,7 +67,7 @@ const FinanceDashboard = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/finance/${id}`, { withCredentials: true });
+      await axios.delete(`/api/finance/${id}`);
       setFinanceData(financeData.filter((record) => record._id !== id));
       toast.success("Record deleted successfully!");
     } catch (error) {
