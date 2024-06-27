@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profilePic: {
+      type: String,
+      default: "https://avatar.iran.liara.run/public/boy",
+    },
   },
   { timestamps: true }
 );

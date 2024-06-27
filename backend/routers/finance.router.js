@@ -1,8 +1,11 @@
 import express from "express";
-import { financeController } from "../controllers/finance.controller.js";
+import {
+  addFinanceData,
+  getFinanceData,
+} from "../controllers/finance.controller.js";
 
 const router = express.Router();
 
-router.post("/add", financeController);
-
+router.post("/add", addFinanceData);
+router.get("/", getFinanceData);
 export default router;
