@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routers/auth.routes.js";
 import financeRouter from "./routers/finance.router.js";
 import userRoutes from "./routers/user.route.js";
-
+import passport from "./utils/googleAuth.js";
 // Initialize dotenv to use environment variables
 dotenv.config();
 
@@ -33,3 +33,24 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/finance", financeRouter);
 app.use("/api/user", userRoutes);
+
+// Google OAuth Routes
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile"] })
+);
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    res.redirect("/financeDashboard");
+  }
+);
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});

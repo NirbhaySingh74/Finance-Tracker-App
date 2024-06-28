@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+
 const Login = () => {
   const {
     register,
@@ -11,16 +13,14 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     try {
       const res = await axios.post("/api/auth/login", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
       if (res.status === 200) {
         toast.success("User Login successfully");
-
         reset();
         navigate("/financeDashboard");
       }
@@ -33,6 +33,11 @@ const Login = () => {
       }
     }
   };
+
+  const handleGoogleSuccess = (response) => {
+    window.location.href = "http://localhost:7000/api/auth/google";
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-500">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
@@ -82,6 +87,14 @@ const Login = () => {
             Login
           </button>
         </form>
+        <div className="mt-4 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              toast.error("Google login failed");
+            }}
+          />
+        </div>
         <p className="mt-4 text-center text-gray-600">
           Dont have an account?{" "}
           <Link
