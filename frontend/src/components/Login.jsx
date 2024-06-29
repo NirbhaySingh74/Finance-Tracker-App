@@ -35,7 +35,7 @@ const Login = () => {
   };
 
   const handleGoogleSuccess = (response) => {
-    window.location.href = "http://localhost:7000/api/auth/google";
+    window.location.href = "/api/auth/google";
   };
 
   return (

@@ -1,4 +1,5 @@
 import express from "express";
+
 import {
   userLogin,
   userLogout,
@@ -7,8 +8,9 @@ import {
 
 const router = express.Router();
 
-//auth router for signup login and logout
+// Auth routes for signup, login, and logout
 router.post("/signup", userSignup);
 router.post("/login", userLogin);
 router.post("/logout", userLogout);
+
 export default router;

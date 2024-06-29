@@ -12,13 +12,13 @@ const Home = () => {
         </p>
         <div className="flex space-x-4 justify-center">
           <Link
-            to={"/login"}
+            to="/login"
             className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"
           >
             Login
           </Link>
           <Link
-            to={"/signup"}
+            to="/signup"
             className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-700"
           >
             Signup
