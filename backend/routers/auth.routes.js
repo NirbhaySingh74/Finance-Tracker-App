@@ -1,4 +1,5 @@
 import express from "express";
+import passport from "passport";
 import {
   userLogin,
   userLogout,
@@ -7,24 +8,21 @@ import {
 
 const router = express.Router();
 
-// Auth routes for signup, login, and logout
-router.post("/signup", userSignup);
-router.post("/login", userLogin);
-router.post("/logout", userLogout);
+router.post("/api/signup", userSignup);
+router.post("/api/login", userLogin);
+router.post("/api/logout", userLogout);
 
-// Route to initiate Google OAuth
-// router.get(
-//   "/auth/google",
-//   passport.authenticate("google", { scope: ["profile", "email"] })
-// );
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
-// Route to handle Google OAuth callback
-// router.get(
-//   "/auth/google/callback",
-//   passport.authenticate("google", {
-//     successRedirect: "/api/financeDashboard", // Update to the correct path after successful login
-//     failureRedirect: "/login",
-//   })
-// );
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: process.env.CLIENT_SUCCESS_REDIRECT_URL,
+    failureRedirect: process.env.CLIENT_FAILURE_REDIRECT_URL,
+  })
+);
 
 export default router;

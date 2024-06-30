@@ -3,7 +3,8 @@ import App from "../App";
 import Login from "../components/Login";
 import SignUp from "../components/SignUp";
 import FinanceDashboard from "../components/FinanceDashboard";
-import OAuthRedirectHandler from "../components/OAuthRedirectHandler";
+
+import ErrorPage from "../components/ErrorPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "financeDashboard",
     element: <FinanceDashboard />,
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);
 
