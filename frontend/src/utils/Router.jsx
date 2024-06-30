@@ -21,10 +21,6 @@ const router = createBrowserRouter([
     path: "financeDashboard",
     element: <FinanceDashboard />,
   },
-  {
-    path: "auth/google/callback",
-    element: <OAuthRedirectHandler />,
-  },
 ]);
 
 export default router;

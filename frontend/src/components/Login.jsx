@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const {
@@ -20,22 +19,26 @@ const Login = () => {
         headers: { "Content-Type": "application/json" },
       });
       if (res.status === 200) {
-        toast.success("User Login successfully");
+        toast.success("User logged in successfully");
         reset();
         navigate("/financeDashboard");
       }
     } catch (error) {
       console.log(error);
-      if (error.response && error.response.data && error.response.data.error) {
-        toast.error(error.response.data.error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
       } else {
         toast.error("An unexpected error occurred");
       }
     }
   };
 
-  const handleGoogleSuccess = (response) => {
-    window.location.href = "/api/auth/google";
+  const loginwithgoogle = () => {
+    window.open("http://localhost:5000/auth/google", "_self");
   };
 
   return (
@@ -88,12 +91,12 @@ const Login = () => {
           </button>
         </form>
         <div className="mt-4 flex justify-center">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={() => {
-              toast.error("Google login failed");
-            }}
-          />
+          <button
+            className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:bg-red-700"
+            onClick={loginwithgoogle}
+          >
+            Login with Google
+          </button>
         </div>
         <p className="mt-4 text-center text-gray-600">
           Dont have an account?{" "}
