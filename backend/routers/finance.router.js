@@ -4,7 +4,7 @@ import {
   deleteFinanceData,
   getFinanceData,
 } from "../controllers/finance.controller.js";
-import protectRoute from "../middleware.js/protectRoute.js";
+import protectRoute from "../middleware/protectRoute.js";
 
 const router = express.Router();
 

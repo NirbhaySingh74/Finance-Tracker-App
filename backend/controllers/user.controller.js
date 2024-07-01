@@ -1,9 +1,8 @@
 import { User } from "../models/user.model.js";
-
 export const getUser = async (req, res) => {
   try {
     const userId = req.user._id;
-    console.log(userId);
+    console.log(userId); // This should log the user ID
     const user = await User.findById(userId).select("-password");
 
     if (!user) {

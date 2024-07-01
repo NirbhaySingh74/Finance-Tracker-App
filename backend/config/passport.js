@@ -21,6 +21,7 @@ passport.use(
         if (user) {
           // If user already exists, update their Google ID
           user.googleId = profile.id;
+          user.profilePic = profile.photos[0].value; // Update profilePic if it exists
         } else {
           // If user does not exist, create a new user
           const placeholderPassword = bcrypt.hashSync(

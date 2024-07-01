@@ -93,7 +93,7 @@ const FinanceDashboard = () => {
     (total, record) => total + parseFloat(record.amount),
     0
   );
-
+  console.log("userData", userData);
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <header className="bg-blue-700 text-white py-4 px-6 flex justify-between items-center shadow-md">
@@ -106,7 +106,7 @@ const FinanceDashboard = () => {
               className="w-10 h-10 rounded-full mr-4 cursor-pointer"
               onClick={() => setShowLogout(!showLogout)}
             />
-            <span className="font-medium">{userData.username}</span>
+            <span className="font-medium">{userData.name}</span>
             {showLogout && (
               <div className="absolute top-full right-0 mt-2 bg-white shadow-lg rounded-lg py-2 z-10">
                 <button
