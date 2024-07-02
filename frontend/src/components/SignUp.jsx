@@ -33,6 +33,10 @@ const SignUp = () => {
     }
   };
 
+  const loginwithgoogle = () => {
+    window.open("http://localhost:5000/auth/google", "_self");
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-blue-500">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
@@ -117,6 +121,14 @@ const SignUp = () => {
             Sign Up
           </button>
         </form>
+        <div className="mt-4 flex justify-center">
+          <button
+            className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:bg-red-700"
+            onClick={loginwithgoogle}
+          >
+            Signup with Google
+          </button>
+        </div>
         <p className="mt-4 text-center text-gray-600">
           Already have an account?{" "}
           <Link
